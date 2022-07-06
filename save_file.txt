@@ -1,0 +1,48 @@
+#include <SFML/Window.hpp>
+using namespace std;
+int main()
+{
+	sf::RenderWindow window(sf::VideoMode(360, 640), "SFMLnoob", sf::Style::Close | sf::Style::Titlebar);
+	struct verlet
+	{
+	public:
+		sf::CircleShape cir();
+		sf::Vector2f curPos;
+		sf::Vector2f oldPos;
+		sf::Vector2f acc;
+		verlet(float a)
+		{
+			sf::CircleShape cir(a);
+			sf::Vector2f curPos = { 0, 0 };
+			sf::Vector2f oldPos = { 0, 0 };
+			sf::Vector2f acc = { 1, 0 };
+		}
+	};
+	//event loop / game loop
+	while (window.isOpen())
+	{
+		sf::Event ent;
+		//if there are any pending events
+		while (window.pollEvent(ent))
+		{
+			if (ent.type == sf::Event::Closed)
+				window.close();
+		}
+		float radius = 50;
+		sf::CircleShape cir(radius);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+			cir.setPosition(localPosition.x - radius, localPosition.y - radius);
+			window.clear();
+			window.draw(cir);
+		}
+		else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		{
+			window.clear();
+		}
+
+		window.display();
+	}
+	return 0;
+}
